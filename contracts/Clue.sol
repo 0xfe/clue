@@ -9,7 +9,7 @@ contract Clue is ERC20 {
 
     address owner;
 
-    constructor() ERC20("ClueKarma", "CLUE") {
+    constructor() ERC20("CLUE", "FLAG") {
       _setupDecimals(2);
       _mint(msg.sender, 1000000000000);
       owner = msg.sender;

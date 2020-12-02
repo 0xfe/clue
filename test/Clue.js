@@ -1,7 +1,7 @@
 const Clue = artifacts.require("Clue")
 
 contract("Clue", accounts => {
-  it("should put 1000000000000 MetaCoin in the first account", async () => {
+  it("should put 1000000000000 FLAG in the first account", async () => {
     const clue = await Clue.deployed()
     const balance = await clue.balanceOf.call(accounts[0])
     assert.equal(
