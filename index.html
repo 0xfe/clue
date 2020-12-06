@@ -1,0 +1,31 @@
+<html>
+
+<head>
+  <title>Capture the FLAG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="CLUE is an ethereum-based Capture the Flag game" />
+  <meta charset="UTF-8" />
+
+  <link rel="stylesheet" href='<%= htmlWebpackPlugin.files.css %>' type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script>
+    if (
+      window.location.protocol == 'http:' &&
+      window.location.hostname != 'localhost'
+    ) {
+      console.log('shit shit secure shit...');
+      window.location.protocol = 'https:';
+    }
+  </script>
+  <script type="text/javascript" src='<%= htmlWebpackPlugin.files.js %>'></script>
+</head>
+
+<body class="text-gray-900">
+  <div class="panel">
+    <h1 class="text-5xl text-blue-500">CLUE</h1>
+    <h3 class="text-2xl text-blue-800">Solve the Clue</h3>
+    <input id="solution" type="text" class="p-2 m-2 w-5/12 bg-red-200 rounded" />
+  </div>
+</body>
+
+</html>
