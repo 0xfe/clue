@@ -4,6 +4,12 @@ Clue is an Ethereum-based CTF game. **Work in progress**
 
 ## Quickstart
 
+```
+npm start
+```
+
+## Setup
+
 Create a `.env` file and add:
 
 ```

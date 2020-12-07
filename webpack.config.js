@@ -20,6 +20,8 @@ module.exports = (env) => {
       minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
     },
     resolve: {
+      // Webpack 5 does not automatically inject polyfills anymore, so
+      // these lines are required.
       fallback: {
         "http": require.resolve("stream-http"),
         "assert": require.resolve("assert"),
@@ -32,9 +34,9 @@ module.exports = (env) => {
     },
     plugins: [
       new webpack.ProvidePlugin({
-        // https://github.com/browserify/node-util/issues/43
+        // For web3 + webpack 5: https://github.com/browserify/node-util/issues/43
         process: 'process/browser',
-        // https://github.com/webpack/changelog-v5/issues/10
+        // For web3 + webpack 5: https://github.com/webpack/changelog-v5/issues/10
         Buffer: ['buffer', 'Buffer'],
         $: 'zepto-webpack',
       }),
