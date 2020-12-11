@@ -16,6 +16,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^3.3.0",
     "@truffle/hdwallet-provider": "^1.2.0",
+    "@types/zepto": "^1.0.31",
     "animate.css": "^4.1.1",
     "assert": "github:browserify/commonjs-assert",
     "buffer": "^6.0.3",
@@ -50,6 +51,7 @@
     "css-loader": "^5.0.1",
     "eslint": "^7.15.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^7.0.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.22.1",
     "file-loader": "^6.2.0",
@@ -61,6 +63,7 @@
     "node-sass": "^5.0.0",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
     "postcss-loader": "^4.1.0",
+    "prettier": "^2.2.1",
     "sass-loader": "^10.1.0",
     "stream-http": "^3.1.1",
     "style-loader": "^2.0.0",

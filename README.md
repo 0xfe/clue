@@ -4,8 +4,27 @@ Clue is an Ethereum-based CTF game. **Work in progress**
 
 ## Quickstart
 
+#### Deploy contract
+
+```
+truffle develop
+migrate --reset
+```
+
+#### Start CTF app
+
 ```
 npm start
+```
+
+#### Setup Metamask
+
+Create a new network in Metamask using Custom RPC, and select `http://localhost:9545` to connect with truffle. Then
+(create and) copy the primary accounts address and send some ether to it:
+
+```
+truffle develop
+> await web3.eth.sendTransaction({from: accounts[0], to: "0xB81909F3360e22067e4AA379C9FB5916154271a1", value: "1000000000000000000"})
 ```
 
 ## Setup

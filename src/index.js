@@ -22,7 +22,12 @@ $(document).ready(() => {
   });
 
   $('#solve').click(async () => {
-    const contract = wallet.getEth().Contract(ClueContract.abi, ClueContract.networks[wallet.networkID].address);
+    const contract = wallet
+      .getEth()
+      .Contract(
+        ClueContract.abi,
+        ClueContract.networks[wallet.networkID].address
+      );
     contract.call('foo');
   });
 });
