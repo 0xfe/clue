@@ -14,5 +14,11 @@ module.exports = {
     "max-len": [1, 180, 2, { ignoreComments: true }],
     "prefer-destructuring": "off",
   },
-  "extends": ["airbnb-base"]
-};
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+
+  "overrides": [{
+    "files": ["*.ts", "*.tsx"],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+  }]
+}

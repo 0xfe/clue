@@ -1,6 +1,7 @@
 import './style.css';
 import 'animate.css';
-import Web3 from 'web3';
+import ClueContract from '../build/contracts/Clue.json';
+import Wallet from './wallet.ts';
 
 function L(...args) {
   // eslint-disable-next-line
@@ -8,19 +9,20 @@ function L(...args) {
 }
 
 $(document).ready(() => {
-  L('float64: hello world!');
+  L('CTF: hello world!');
+  L('Using ABI:', ClueContract.abi);
 
-  if (window.ethereum) {
-    L('starting ethereum..');
-    $('#connect').prop('disabled', false);
-  }
+  const wallet = new Wallet();
 
   $('#solution').focus();
   $('#connect').click(async () => {
-    const web3 = new Web3(window.ethereum);
-    const accounts = await web3.eth.requestAccounts();
-    L(accounts);
+    await wallet.connect();
     $('#connect').prop('disabled', true);
-    $('#connect').text(accounts[0]);
+    $('#connect').text(wallet.getAccounts()[0]);
+  });
+
+  $('#solve').click(async () => {
+    const contract = wallet.getEth().Contract(ClueContract.abi, ClueContract.networks[wallet.networkID].address);
+    contract.call('foo');
   });
 });

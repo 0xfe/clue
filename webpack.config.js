@@ -72,7 +72,7 @@ module.exports = (env) => {
     },
     module: {
       rules: [
-        { test: /\.jsx?$/, exclude: /node_modules/, use: [{ loader: 'babel-loader' }, { loader: 'eslint-loader', options: { fix: true } }] },
+        { test: /\.(ts|js)x?$/, exclude: /node_modules/, use: [{ loader: 'babel-loader' }, { loader: 'eslint-loader', options: { fix: true } }] },
         { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] },
         { test: /\.hbs$/, loader: 'handlebars-loader' },
         { test: /\.svg$/, loader: 'svg-inline-loader' },
