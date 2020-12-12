@@ -1,27 +1,22 @@
 import './style.css';
 import 'animate.css';
-import ClueContract from '../build/contracts/Clue.json';
 import Wallet from './wallet.ts';
+import { onEnterPressed } from './util.ts';
 
 function L(...args) {
   // eslint-disable-next-line
   console.log(...args);
 }
 
-$(document).ready(() => {
-  L('CTF: hello world!');
-  L('Using ABI:', ClueContract.abi);
-
-  const wallet = new Wallet();
-
-  $('#solution').focus();
-  $('#connect').click(async () => {
-    await wallet.connect();
+$(document).ready(async () => {
+  function connected(accounts) {
     $('#connect').prop('disabled', true);
-    $('#connect').text(wallet.getAccounts()[0]);
-  });
+    $('#connect').text(accounts[0]);
+  }
 
-  $('#solve').click(async () => {
+  const wallet = new Wallet({ onAccountsChanged: connected });
+
+  async function solve() {
     const solution = $('#solution').val();
     try {
       const result = await wallet.testSolution(solution);
@@ -31,5 +26,15 @@ $(document).ready(() => {
     } catch (e) {
       L('E:', e.stack);
     }
+  }
+
+  await wallet.connect();
+
+  $('#connect').click(() => {
+    wallet.connect();
   });
+
+  $('#solve').click(solve);
+  $('#solution').focus();
+  onEnterPressed('#solution', solve);
 });
