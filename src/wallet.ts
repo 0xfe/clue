@@ -61,12 +61,15 @@ class Wallet {
     return this.accounts;
   }
 
-  getEth(): Eth {
-    return this.web3.eth;
+  async testSolution(solution: string): Promise<boolean> {
+    const result = await this.clueContract.methods.solve(solution).call();
+    L('testSolution(' + solution + '): ', result);
+    return result;
   }
 
-  call(): void {
-    //foo
+  async solve(solution: string): Promise<void> {
+    const result = await this.clueContract.methods.solve(solution).send({ from: this.accounts[0] });
+    L('solve(' + solution + '): ', result);
   }
 }
 

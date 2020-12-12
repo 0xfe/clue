@@ -73,11 +73,11 @@ $ truffle console --network goerli
 > await clue.resetClue("What's the story, morning glory?", web3.utils.sha3("ain't no slug, jitterbug"))
 
 # Call solve and get return value without modifying chain state:
-> await clue.solve.call(web3.utils.stringToHex("ain't no slug, jitterbug"))
+> await clue.solve.call("ain't no slug, jitterbug")
 
 # Call solve for real (modify chain state), get tx hash (but not return value):
 > accounts = await web3.eth.getAccounts()
-> await clue.solve(web3.utils.stringToHex("ain't no slug, jitterbug"), {from: accounts[1]})
+> await clue.solve("ain't no slug, jitterbug", {from: accounts[1]})
 
 # Account balance of caller should now be 1:
 > await clue.balanceOf.call(accounts[1])
