@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import { provider } from 'web3-core';
+import { AbstractProvider } from 'web3-core';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import ClueContract from '../build/contracts/Clue.json';
@@ -16,6 +16,10 @@ declare global {
   }
 }
 
+interface NewProvider extends AbstractProvider {
+  on: (string, any) => void;
+}
+
 interface WalletParams {
   onAccountsChanged: (accounts: Array<string>) => void;
   onNetworkChanged: (network: number) => void;
@@ -28,7 +32,7 @@ class Wallet {
   networkID: number;
   accounts: Array<string>;
   clueContract: Contract;
-  provider: provider;
+  provider: NewProvider;
 
   constructor(params: WalletParams) {
     this.web3 = null;
