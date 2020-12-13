@@ -2,11 +2,10 @@ import Web3 from 'web3';
 import { AbstractProvider } from 'web3-core';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import ClueContract from '../build/contracts/Clue.json';
 
 function L(...args) {
   // eslint-disable-next-line
-  console.log(...args);
+  console.log('wallet.ts:', ...args);
 }
 
 declare global {
@@ -25,13 +24,17 @@ interface WalletParams {
   onNetworkChanged: (network: number) => void;
 }
 
+interface ContractSpec {
+  abi: AbiItem;
+  networks: Array<{ address: string }>;
+}
+
 class Wallet {
   params: WalletParams;
   web3: Web3;
   connected: boolean;
   networkID: number;
   accounts: Array<string>;
-  clueContract: Contract;
   provider: NewProvider;
 
   constructor(params: WalletParams) {
@@ -57,12 +60,7 @@ class Wallet {
     this.networkID = await this.web3.eth.net.getId();
     L('networkID: ', this.networkID);
     L('accounts: ', this.accounts);
-    L('available networks: ', ClueContract.networks);
 
-    this.clueContract = new this.web3.eth.Contract(
-      <AbiItem>(<unknown>ClueContract.abi),
-      ClueContract.networks[this.networkID].address
-    );
     this.params.onAccountsChanged(this.accounts);
 
     this.provider.on('accountsChanged', (accounts) => {
@@ -79,27 +77,16 @@ class Wallet {
     this.provider.on('chainChanged', (networkID) => {
       L('chainChanged: ', networkID);
       this.networkID = networkID;
-      this.clueContract = new this.web3.eth.Contract(
-        <AbiItem>(<unknown>ClueContract.abi),
-        ClueContract.networks[this.networkID].address
-      );
     });
+  }
+
+  newContract(spec: ContractSpec): Contract {
+    return new this.web3.eth.Contract(spec.abi, spec.networks[this.networkID].address);
   }
 
   getAccounts(): Array<string> {
     return this.accounts;
   }
-
-  async testSolution(solution: string): Promise<boolean> {
-    const result = await this.clueContract.methods.solve(solution).call();
-    L('testSolution(' + solution + '): ', result);
-    return result;
-  }
-
-  async solve(solution: string): Promise<void> {
-    const result = await this.clueContract.methods.solve(solution).send({ from: this.accounts[0] });
-    L('solve(' + solution + '): ', result);
-  }
 }
 
-export default Wallet;
+export { Wallet as default, ContractSpec };

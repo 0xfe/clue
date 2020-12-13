@@ -4,10 +4,10 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract Clue is ERC20 {
     string public _clue;
+    bool public _answered;
 
     // Maybe merge these to to save contract storage space
     bytes32 private _answerHash;
-    bool private _answered;
 
     address owner;
 
