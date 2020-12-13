@@ -10,8 +10,12 @@ function L(...args) {
 
 $(document).ready(async () => {
   function connected(accounts) {
-    $('#connect').prop('disabled', true);
-    $('#connect').text(accounts[0]);
+    L(accounts);
+    const ready = accounts.length > 0;
+    $('#connect').prop('disabled', ready);
+    $('#connect').text(ready ? accounts[0] : 'Connect Wallet');
+    $('#solution').prop('disabled', !ready);
+    $('#solve').prop('disabled', !ready);
   }
 
   const wallet = new Wallet({ onAccountsChanged: connected });
@@ -22,19 +26,34 @@ $(document).ready(async () => {
       const result = await wallet.testSolution(solution);
       if (result) {
         await wallet.solve(solution);
+      } else {
+        $('#error').text('Sorry, try again!');
       }
     } catch (e) {
       L('E:', e.stack);
     }
   }
 
-  await wallet.connect();
+  async function connect() {
+    $('#error').text('');
+    try {
+      await wallet.connect();
+    } catch (e) {
+      L(e);
+      $('#error').text('Dangit! You need an Ethereum wallet such as Metamask to continue. :-(');
+    }
+  }
+
+  connect();
 
   $('#connect').click(() => {
-    wallet.connect();
+    connect();
   });
 
   $('#solve').click(solve);
   $('#solution').focus();
+  $('#solution').keypress(() => {
+    $('#error').text('');
+  });
   onEnterPressed('#solution', solve);
 });

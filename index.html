@@ -1,38 +1,38 @@
 <html>
+  <head>
+    <title>Capture the FLAG</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="CLUE is an ethereum-based Capture the Flag game" />
+    <meta charset="UTF-8" />
 
-<head>
-  <title>Capture the FLAG</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="CLUE is an ethereum-based Capture the Flag game" />
-  <meta charset="UTF-8" />
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css %>" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script>
+      if (window.location.protocol == 'http:' && window.location.hostname != 'localhost') {
+        console.log('shit shit secure shit...');
+        window.location.protocol = 'https:';
+      }
+    </script>
+    <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js %>"></script>
+  </head>
 
-  <link rel="stylesheet" href='<%= htmlWebpackPlugin.files.css %>' type="text/css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script>
-    if (
-      window.location.protocol == 'http:' &&
-      window.location.hostname != 'localhost'
-    ) {
-      console.log('shit shit secure shit...');
-      window.location.protocol = 'https:';
-    }
-  </script>
-  <script type="text/javascript" src='<%= htmlWebpackPlugin.files.js %>'></script>
-</head>
-
-<body class="text-gray-900">
-  <div class="panel">
-    <h1 class="text-4xl text-blue-500">CLUE CTF 0xF433821123</h1>
-    <h3 class="text-2xl text-blue-800">Capture the Flag</h3>
-    <div class="pt-5 pb-5">
-      <button id="connect" disabled class="disabled:opacity-50 disabled:bg-gray-500">Connect Wallet</button>
+  <body class="text-gray-900">
+    <div class="panel">
+      <h1 class="text-4xl text-blue-500">CLUE CTF 0xF433821123</h1>
+      <h3 class="text-2xl text-blue-800">Capture the Flag</h3>
+      <div class="pt-5 pb-5">
+        <button id="connect" class="disabled:opacity-50 disabled:bg-gray-500 hover:opacity-75">Connect Wallet</button>
+      </div>
+      <input
+        id="solution"
+        type="text"
+        class="p-2 m-2 w-5/12 bg-red-200 rounded focus:ring-purple-600 focus:border-transparent"
+        disabled
+      />
+      <div class="flex flex-col pt-5 pb-5 items-center">
+        <div id="error" class="p-4 text-center text-red-700"></div>
+        <button id="solve" class="disabled:opacity-50 disabled:bg-gray-500 text-lg" disabled>Solve</button>
+      </div>
     </div>
-    <input id="solution" type="text"
-      class="p-2 m-2 w-5/12 bg-red-200 rounded focus:ring-purple-600 focus:border-transparent" />
-    <div class="pt-5 pb-5">
-      <button id="solve" class="disabled:opacity-50 disabled:bg-gray-500 text-lg">Solve</button>
-    </div>
-  </div>
-</body>
-
+  </body>
 </html>

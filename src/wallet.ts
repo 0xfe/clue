@@ -48,11 +48,25 @@ class Wallet {
   }
 
   async connect(): Promise<void> {
-    if (!this.web3) {
-      throw new Error('TODO - no web3');
+    L('Wallet: connecting...');
+    if (!this.provider) {
+      throw new Error('No Web3 provider found.');
     }
 
+    this.accounts = await this.web3.eth.requestAccounts();
+    this.networkID = await this.web3.eth.net.getId();
+    L('networkID: ', this.networkID);
+    L('accounts: ', this.accounts);
+    L('available networks: ', ClueContract.networks);
+
+    this.clueContract = new this.web3.eth.Contract(
+      <AbiItem>(<unknown>ClueContract.abi),
+      ClueContract.networks[this.networkID].address
+    );
+    this.params.onAccountsChanged(this.accounts);
+
     this.provider.on('accountsChanged', (accounts) => {
+      L('accountsChanged', accounts);
       this.accounts = accounts;
       this.params.onAccountsChanged(accounts);
       if (this.accounts.length > 0) {
@@ -62,15 +76,14 @@ class Wallet {
       }
     });
 
-    this.provider.on('networkChanged', (networkID) => {
+    this.provider.on('chainChanged', (networkID) => {
+      L('chainChanged: ', networkID);
       this.networkID = networkID;
       this.clueContract = new this.web3.eth.Contract(
         <AbiItem>(<unknown>ClueContract.abi),
         ClueContract.networks[this.networkID].address
       );
     });
-
-    this.accounts = await this.web3.eth.requestAccounts();
   }
 
   getAccounts(): Array<string> {
