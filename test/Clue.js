@@ -48,6 +48,23 @@ contract('Clue', (accounts) => {
     assert.equal(result, false, 'contract accepted an incorrect solution');
   });
 
+  it("should reject solutions not commited from the sender's account", async () => {
+    const clue = await Clue.deployed();
+    await clue.resetClue('test 1', web3.utils.sha3('solution'));
+    // Commit with accounts[1]
+    await clue.commit(makeCommitment('solution', accounts[1]), { from: accounts[1] });
+
+    let hasError = false;
+    try {
+      // Solve with accounts[0]
+      await clue.solve.call('solution');
+    } catch (error) {
+      hasError = true;
+    }
+
+    assert.equal(hasError, true, 'contract accepted solution that was commited by a different account');
+  });
+
   it('should fail a correct solution with the wrong commitment', async () => {
     const clue = await Clue.deployed();
 
@@ -61,7 +78,7 @@ contract('Clue', (accounts) => {
       hasError = true;
     }
 
-    assert.equal(hasError, true, 'contract did not throw error on second solution');
+    assert.equal(hasError, true, 'contract accepted solution with an incorrect commitment');
   });
 
   it("should reward the solver's account", async () => {
