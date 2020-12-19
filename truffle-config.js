@@ -52,6 +52,11 @@ module.exports = {
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "5"       // Any network (default: none)
     },
+    foobar: {
+      provider: () => new HDWalletProvider(WALLET_WORDS, `http://127.0.0.1:8545`),
+      gas: 4500000,           // Gas sent with each transaction (default: ~6700000)
+      network_id: "*"       // Any network (default: none)
+    },
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
