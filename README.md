@@ -75,7 +75,7 @@ See code in `test/Clue.js` for more examples.
 > await clue.resetClue("What's the story, morning glory?", web3.utils.sha3("ain't no slug, jitterbug"))
 
 # Make a commitment for the solution (before solving)
-> await clue.commit(web3.utils.hexToBytes(accounts[0]).concat(web3.utils.hexToBytes(web3.utils.toHex("ain't no slug, jitterbug"))))
+> await clue.commit(web3.utils.keccak256(web3.utils.hexToBytes(accounts[0]).concat(web3.utils.hexToBytes(web3.utils.toHex("ain't no slug, jitterbug")))))
 
 # Call solve and get return value without modifying chain state:
 > await clue.solve.call("ain't no slug, jitterbug")

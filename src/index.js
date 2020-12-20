@@ -28,6 +28,9 @@ $(document).ready(async () => {
     try {
       const result = await clue.testSolution(solution);
       if (result) {
+        L('commiting solution...');
+        await clue.commit(solution);
+        L('sending solution...');
         await clue.solve(solution);
       } else {
         $('#error').text('Sorry, try again!');
@@ -41,8 +44,9 @@ $(document).ready(async () => {
     $('#error').text('');
     try {
       await wallet.connect();
-      $('#clue').text(await clue.getClue());
-      if (await clue.solved()) {
+      const clueText = await clue.getClue();
+      $('#clue').text(clueText);
+      if (clue.solved) {
         $('#solution').prop('disabled', true);
         $('#solve').prop('disabled', true);
         $('#solution').val('This clue is already solved.');
