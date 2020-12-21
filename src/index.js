@@ -16,26 +16,52 @@ $(document).ready(async () => {
     $('#connect').prop('disabled', ready);
     $('#connect').text(ready ? accounts[0] : 'Connect Wallet');
     $('#solution').prop('disabled', !ready);
-    $('#solve').prop('disabled', !ready);
+    $('#commit').prop('disabled', !ready);
     $('#solution').focus();
+  }
+
+  function disable() {
+    $('#solution').prop('disabled', true);
+    $('#commit').prop('disabled', true);
+    $('#solve').prop('disabled', true);
   }
 
   const wallet = new Wallet({ onAccountsChanged: connected });
   const clue = new Clue(wallet);
 
-  async function solve() {
+  async function commit() {
     const solution = $('#solution').val();
     try {
       const result = await clue.testSolution(solution);
       if (result) {
         L('commiting solution...');
         await clue.commit(solution);
-        L('sending solution...');
-        await clue.solve(solution);
+        $('#solve').prop('disabled', false);
       } else {
-        $('#error').text('Sorry, try again!');
+        $('#error').text('Wrong answer, try again!');
+        $('#solution').focus();
       }
     } catch (e) {
+      $('#error').text('Something went wrong!');
+      L('E:', e.stack);
+    }
+  }
+
+  async function solve() {
+    const solution = $('#solution').val();
+    try {
+      const result = await clue.testSolution(solution);
+      if (result) {
+        L('sending solution...');
+        await clue.solve(solution);
+        disable();
+        $('#error').text('You cracked it! FLAG claimed!');
+      } else {
+        $('#error').text('Wrong answer, try again!');
+        $('#solution').focus();
+      }
+    } catch (e) {
+      $('#error').text('Something went wrong!');
       L('E:', e.stack);
     }
   }
@@ -47,8 +73,7 @@ $(document).ready(async () => {
       const clueText = await clue.getClue();
       $('#clue').text(clueText);
       if (clue.solved) {
-        $('#solution').prop('disabled', true);
-        $('#solve').prop('disabled', true);
+        disable();
         $('#solution').val('This clue is already solved.');
       }
     } catch (e) {
@@ -63,10 +88,18 @@ $(document).ready(async () => {
     connect();
   });
 
+  $('#commit').click(commit);
   $('#solve').click(solve);
   $('#solution').focus();
   $('#solution').keypress(() => {
     $('#error').text('');
+    setTimeout(() => {
+      if (clue.commitment == clue.makeCommitment($('#solution').val())) {
+        $('#solve').prop('disabled', false);
+      } else {
+        $('#solve').prop('disabled', true);
+      }
+    }, 0);
   });
   onEnterPressed('#solution', solve);
 });

@@ -47,15 +47,17 @@ contract Clue is ERC20 {
         delete _commitmentKeys;
     }
 
-    function getClue() public view returns (string memory c, bytes32 h, bool a) {
+    function getClue() public view returns (string memory c, bytes32 h, bool a, bytes32 commitment) {
       c = _clue;
       h = _answerHash;
       a = _answered;
+      commitment = _commitments[msg.sender];
     }
 
     function commit(bytes32 commitment) public {
       require(!_answered, "This clue is already cracked");
       _commitments[msg.sender] = commitment;
+      _commitmentKeys.push(msg.sender);
     }
 
     function solve(string memory answer) public returns (bool) {
